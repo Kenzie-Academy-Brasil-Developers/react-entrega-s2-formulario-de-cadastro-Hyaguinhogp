@@ -8,12 +8,16 @@ import DefaultForm from "../../components/DefaultForm";
 import DefaultPage from "../../components/DefaultPage";
 import api from "../../services/api";
 import { LoadingContainer } from "./styles";
+import 'react-toastify/dist/ReactToastify.min.css';
+import { toast } from 'react-toastify';
 
 const Login = () => {
 
     const navigate = useNavigate();
     const [toRegister, setToRegister] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const successNotify = () => toast.success('Login feito com sucesso!', { autoClose: 3000 });
+    const failNotify = () => toast.error('Ops! Algo deu errado', { autoClose: 3000 });
 
     const schema = yup.object().shape({
         email: yup.string().required('Email obrigatório').email('Email inválido'),
@@ -33,9 +37,17 @@ const Login = () => {
                 window.localStorage.setItem('@USERID', data.user.id);
             })
             .then(() => {
-                navigate(`/users/${localStorage.getItem('@USERID')}`);
+                setIsLoading(false)
+                successNotify();
+                setTimeout(() => {
+                    navigate(`/users/${localStorage.getItem('@USERID')}`);
+                }, 2000);
+
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                setIsLoading(false);
+                failNotify();
+            });
     }
 
     return (
@@ -43,7 +55,7 @@ const Login = () => {
             {
                 isLoading && <LoadingContainer>
                     <div>
-                        <Loading style={{background: 'transparent'}} />
+                        <Loading style={{ background: 'transparent' }} />
                     </div>
 
                 </LoadingContainer>
@@ -60,9 +72,6 @@ const Login = () => {
                         {...register('email')}
                     />
                     <span>{errors.email?.message}</span>
-
-
-
                     <label htmlFor="password">Senha</label>
                     <input
                         id='password'
@@ -84,7 +93,6 @@ const Login = () => {
                     >Cadastre-se</button>
 
                     {toRegister && <Navigate to='/register' />}
-
                 </DefaultForm>
             </DefaultPage>
         </>

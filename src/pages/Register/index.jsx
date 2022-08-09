@@ -8,15 +8,16 @@ import DefaultPage from '../../components/DefaultPage';
 import api from "../../services/api";
 import { HeaderContainer, LoadingContainer, ReturnButton } from './styles';
 import { ReactComponent as Loading } from '../../assets/images/loading.svg';
-import DefaultModal from '../../components/DefaultModal';
+import 'react-toastify/dist/ReactToastify.min.css';
+import { toast } from 'react-toastify';
 
 const Register = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [toLogin, setToLogin] = useState(false);
-    const [onSuccess, setOnSuccess] = useState(false);
-    const [onFail, setOnFail] = useState(false);
     let navigate = useNavigate();
+    const successNotify = () => toast.success('Registro feito com sucesso!', { autoClose: 3000 });
+    const failNotify = () => toast.error('Ops! Algo deu errado', { autoClose: 3000 });
 
     const schema = yup.object().shape({
         name: yup.string()
@@ -48,24 +49,18 @@ const Register = () => {
         api.post('/users', data)
             .then((res) => {
                 setIsLoading(false);
-                setOnSuccess(true);
+                successNotify();
                 setTimeout(() => {
                     navigate('/login');
                 }, 2000);
                 
             })
             .catch(error => {
+                console.log(error)
                 setIsLoading(false)
-                handleError();
+                failNotify();
             });
     };
-
-    const handleError = () => {
-        setOnFail(true);
-        setTimeout(() => {
-            setOnFail(false);
-        }, 2000);
-    }
 
     return (
         <>
@@ -76,8 +71,6 @@ const Register = () => {
                     </div>
                 </LoadingContainer>
             }
-            {onSuccess && <DefaultModal isSuccess={true} />}
-            {onFail && <DefaultModal isSuccess={false} />}
             <DefaultPage>
                 <HeaderContainer>
                     <h1>Kenzie Hub</h1>
