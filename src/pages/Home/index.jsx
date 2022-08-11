@@ -1,28 +1,43 @@
-import { useEffect, useState } from "react";
-import api from "../../services/api";
+import { useContext, useEffect, useState } from "react";
 import { Container, Content, Header, UserInfo } from "./styles";
 import { useNavigate } from 'react-router-dom';
-import DefaultModal from "../../components/DefaultModal";
+import { userContext } from "../../contexts/UserContext";
+import { LoadingContainer } from "../Login/styles";
+import { ReactComponent as Loading } from '../../assets/images/loading.svg';
 
 const Home = () => {
 
-    const [userInfo, setUserInfo] = useState({});
+    const { user, getUser } = useContext(userContext);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        api.get(`/users/${localStorage.getItem('@USERID')}`)
-            .then((res) => {
-                setUserInfo(res.data);
-            })
-    }, []);
 
     const handleButton = () => {
         localStorage.clear();
         navigate('/login');
     }
 
+    useEffect(() => {
+        setIsLoading(true);
+        getUser()
+            .then(() => {
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                setIsLoading(false);
+                navigate('/login');
+            })
+
+    }, []);
+
     return (
         <>
+            {
+                isLoading && <LoadingContainer>
+                    <div>
+                        <Loading style={{ background: 'transparent' }} />
+                    </div>
+                </LoadingContainer>
+            }
             <Container>
                 <Content>
                     <Header>
@@ -33,8 +48,8 @@ const Home = () => {
                     </Header>
                     <UserInfo>
                         <div>
-                            <h2>Olá, {userInfo.name}</h2>
-                            <p>{userInfo.course_module}</p>
+                            <h2>Olá, {user.name}</h2>
+                            <p>{user.course_module}</p>
                         </div>
                     </UserInfo>
                 </Content>

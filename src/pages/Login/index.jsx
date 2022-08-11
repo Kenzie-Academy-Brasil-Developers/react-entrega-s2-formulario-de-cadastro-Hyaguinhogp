@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
@@ -10,6 +10,7 @@ import api from "../../services/api";
 import { LoadingContainer } from "./styles";
 import 'react-toastify/dist/ReactToastify.min.css';
 import { toast } from 'react-toastify';
+import { userContext } from '../../contexts/UserContext';
 
 const Login = () => {
 
@@ -18,6 +19,7 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
     const successNotify = () => toast.success('Login feito com sucesso!', { autoClose: 3000 });
     const failNotify = () => toast.error('Ops! Algo deu errado', { autoClose: 3000 });
+    const { login } = useContext(userContext)
 
     const schema = yup.object().shape({
         email: yup.string().required('Email obrigatório').email('Email inválido'),
@@ -30,24 +32,19 @@ const Login = () => {
 
     const onSubmitFuntion = (data) => {
         setIsLoading(true);
-        api.post('/sessions', data)
-            .then(({ data }) => {
-                window.localStorage.clear();
-                window.localStorage.setItem('@TOKEN', data.token);
-                window.localStorage.setItem('@USERID', data.user.id);
-            })
-            .then(() => {
-                setIsLoading(false)
+        try {
+            login(data).then(() => {
+                setIsLoading(false);
                 successNotify();
                 setTimeout(() => {
                     navigate(`/users/${localStorage.getItem('@USERID')}`);
                 }, 2000);
-
-            })
-            .catch(err => {
-                setIsLoading(false);
-                failNotify();
             });
+        }
+        catch(err){
+            setIsLoading(false);
+            failNotify();
+        }
     }
 
     return (

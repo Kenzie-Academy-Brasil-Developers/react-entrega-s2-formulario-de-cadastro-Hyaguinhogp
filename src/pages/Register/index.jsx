@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
@@ -10,11 +10,13 @@ import { HeaderContainer, LoadingContainer, ReturnButton } from './styles';
 import { ReactComponent as Loading } from '../../assets/images/loading.svg';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { toast } from 'react-toastify';
+import { userContext } from '../../contexts/UserContext';
 
 const Register = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [toLogin, setToLogin] = useState(false);
+    const { userRegister } = useContext(userContext);
     let navigate = useNavigate();
     const successNotify = () => toast.success('Registro feito com sucesso!', { autoClose: 3000 });
     const failNotify = () => toast.error('Ops! Algo deu errado', { autoClose: 3000 });
@@ -46,17 +48,30 @@ const Register = () => {
 
     const onSubmit = (data) => {
         setIsLoading(true);
-        api.post('/users', data)
-            .then((res) => {
+        /*         api.post('/users', data)
+                    .then((res) => {
+                        setIsLoading(false);
+                        successNotify();
+                        setTimeout(() => {
+                            navigate('/login');
+                        }, 2000);
+        
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        setIsLoading(false)
+                        failNotify();
+                    }); */
+
+        userRegister(data)
+            .then(() => {
                 setIsLoading(false);
                 successNotify();
                 setTimeout(() => {
                     navigate('/login');
                 }, 2000);
-                
             })
             .catch(error => {
-                console.log(error)
                 setIsLoading(false)
                 failNotify();
             });
