@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import api from "../services/api";
 
 export const userContext = createContext();
@@ -25,8 +25,26 @@ export const UserProvider = ({ children }) => {
             .then(res => setUser(res.data));
     }
 
+    async function newTechnology(technology) {
+        return api.post(`/users/techs`, technology, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('@TOKEN')}`
+            }
+        })
+            .then(res => setUser(res.data));
+    }
+
+    async function deleteTechnology(technologyId) {
+        return api.delete(`/users/techs/${technologyId}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('@TOKEN')}`
+            }
+        })
+            .then(res => setUser(res.data));
+    }
+
     return (
-        <userContext.Provider value={{ user, userRegister, login, getUser }}>
+        <userContext.Provider value={{ user, userRegister, login, getUser, newTechnology, deleteTechnology }}>
             {children}
         </userContext.Provider>
     );

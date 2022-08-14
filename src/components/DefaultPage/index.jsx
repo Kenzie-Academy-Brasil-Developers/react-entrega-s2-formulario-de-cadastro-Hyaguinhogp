@@ -1,8 +1,8 @@
 import { Container, Content } from "./styles";
 
-const DefaultPage = ({children}) => {
+const DefaultPage = ({children, isModal = false}) => {
     return(
-        <Container>
+        <Container isModal={isModal}>
             <Content>
                 {children}
             </Content>

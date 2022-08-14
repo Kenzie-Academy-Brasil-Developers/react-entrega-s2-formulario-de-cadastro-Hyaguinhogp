@@ -5,7 +5,6 @@ export const Container = styled.div`
     padding: 34px 18px;
     border-radius: 3px;
     background-color: #212529;
-
 `;
 export const Content = styled.form`
 

@@ -2,15 +2,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 import * as yup from 'yup';
 import { ReactComponent as Loading } from '../../assets/images/loading.svg';
 import DefaultForm from "../../components/DefaultForm";
 import DefaultPage from "../../components/DefaultPage";
-import api from "../../services/api";
-import { LoadingContainer } from "./styles";
-import 'react-toastify/dist/ReactToastify.min.css';
-import { toast } from 'react-toastify';
 import { userContext } from '../../contexts/UserContext';
+import { LoadingContainer } from "./styles";
 
 const Login = () => {
 
@@ -19,7 +18,7 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
     const successNotify = () => toast.success('Login feito com sucesso!', { autoClose: 3000 });
     const failNotify = () => toast.error('Ops! Algo deu errado', { autoClose: 3000 });
-    const { login } = useContext(userContext)
+    const { login } = useContext(userContext);
 
     const schema = yup.object().shape({
         email: yup.string().required('Email obrigatório').email('Email inválido'),
@@ -34,15 +33,15 @@ const Login = () => {
         setIsLoading(true);
         try {
             login(data).then(() => {
-                setIsLoading(false);
+                setIsLoading(true);
                 successNotify();
                 setTimeout(() => {
                     navigate(`/users/${localStorage.getItem('@USERID')}`);
                 }, 2000);
             });
         }
-        catch(err){
-            setIsLoading(false);
+        catch (err) {
+            setIsLoading(true);
             failNotify();
         }
     }
@@ -54,7 +53,6 @@ const Login = () => {
                     <div>
                         <Loading style={{ background: 'transparent' }} />
                     </div>
-
                 </LoadingContainer>
             }
             <DefaultPage>
@@ -78,7 +76,7 @@ const Login = () => {
                     />
                     <span>{errors.password?.message}</span>
 
-                    <button className="submit-button" type="submit">Entrar</button>
+                    <button className="submit-button">Entrar</button>
 
                     <p className="margin">Ainda não possui uma conta?</p>
 
