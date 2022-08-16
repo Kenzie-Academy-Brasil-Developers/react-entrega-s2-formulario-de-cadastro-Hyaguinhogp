@@ -3,12 +3,19 @@ import { FaRegTrashAlt } from 'react-icons/fa'
 import { useContext } from "react";
 import { userContext } from "../../contexts/UserContext";
 
-const Technology = ({tech}) => {
+const Technology = ({tech, setIsLoading}) => {
 
-    const { deleteTechnology } = useContext(userContext);
+    const { getUser, deleteTechnology } = useContext(userContext);
 
     const handleDeleteButton = () => {
-        deleteTechnology(tech.id);
+        setIsLoading(true);
+        deleteTechnology(tech.id)
+            .then(() => {
+                getUser()
+                    .then(() => {
+                        setIsLoading(false);
+                    });
+            });
     }
 
     return(

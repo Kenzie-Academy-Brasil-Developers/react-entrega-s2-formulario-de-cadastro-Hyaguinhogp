@@ -6,10 +6,11 @@ import { NewTechnologyHeader } from './styles';
 import { useForm } from 'react-hook-form';
 import { useContext } from 'react';
 import { userContext } from '../../contexts/UserContext';
+import { useState } from 'react';
 
-const NewTechnologyModal = ({setShowModal, setIsLoading}) => {
+const NewTechnologyModal = ({ setShowModal, setIsLoading }) => {
 
-    const { newTechnology } = useContext(userContext);
+    const { getUser, newTechnology } = useContext(userContext);
 
     const handleHideModal = () => {
         setShowModal(false);
@@ -26,49 +27,52 @@ const NewTechnologyModal = ({setShowModal, setIsLoading}) => {
 
     const onSubmitFuntion = (data) => {
         setIsLoading(true);
-        try{
-            newTechnology(data).then(() => {
-                setIsLoading(false)
+        setShowModal(false);
+        newTechnology(data)
+            .then(() => {
                 setShowModal(false);
-            });
-            
-        }
-        catch(error) {
-            console.log(error);
-            setIsLoading(false);
-        }
+                getUser()
+                    .then(() => {
+                        setIsLoading(false);
+                    });
+            }).catch((error) => {
+                setIsLoading(false);
+                setShowModal(true);
+            })
     }
 
     return (
-        <DefaultPage isModal={true}>
-            <NewTechnologyHeader>
+        <>
+            <DefaultPage isModal={true}>
+                <NewTechnologyHeader>
                     <h2>Cadastrar Tecnologia</h2>
                     <button onClick={handleHideModal}>X</button>
                 </NewTechnologyHeader>
-            <DefaultForm onSubmit={handleSubmit(onSubmitFuntion)}>
-                <label htmlFor="name">Nome</label>
-                <input 
-                    id='name' 
-                    type="text"
-                    {...register('title')}
+                <DefaultForm onSubmit={handleSubmit(onSubmitFuntion)}>
+                    <label htmlFor="name">Nome</label>
+                    <input
+                        id='name'
+                        type="text"
+                        {...register('title')}
                     />
-                <span>{errors.name?.message}</span>
+                    <span>{errors.name?.message}</span>
 
-                <label htmlFor="status">Selecionar status</label>
-                <select 
-                    id='status'
-                    {...register('status')}
-                >
-                    <option value="Iniciante">Iniciante</option>
-                    <option value="Intermediário">Intermediário</option>
-                    <option value="Avançado">Avançado</option>
-                </select>
-                <span></span>
+                    <label htmlFor="status">Selecionar status</label>
+                    <select
+                        id='status'
+                        {...register('status')}
+                    >
+                        <option value="Iniciante">Iniciante</option>
+                        <option value="Intermediário">Intermediário</option>
+                        <option value="Avançado">Avançado</option>
+                    </select>
+                    <span></span>
 
-                <button className='submit-button' type='submit'>Cadastrar Tecnologia</button>
+                    <button className='submit-button' type='submit'>Cadastrar Tecnologia</button>
 
-            </DefaultForm>
-        </DefaultPage>
+                </DefaultForm>
+            </DefaultPage>
+        </>
 
     );
 }

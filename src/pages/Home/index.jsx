@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-import { Container, Content, Header, UserInfo } from "./styles";
+import { useContext, useEffect, useState } from 'react';
+import { Container, Content, Header, UserInfo } from './styles';
 import { useNavigate } from 'react-router-dom';
-import { userContext } from "../../contexts/UserContext";
-import { LoadingContainer } from "../Login/styles";
+import { userContext } from '../../contexts/UserContext';
+import { LoadingContainer } from '../Login/styles';
 import { ReactComponent as Loading } from '../../assets/images/loading.svg';
-import Technologies from "../../components/Technologies";
-import NewTechnologyModal from "../../components/newTechnologyModal";
+import Technologies from '../../components/Technologies';
+import NewTechnologyModal from '../../components/newTechnologyModal';
 
 const Home = () => {
 
@@ -24,10 +24,6 @@ const Home = () => {
         getUser()
             .then(() => {
                 setIsLoading(false);
-            })
-            .then(() => {
-                console.log(user);
-                console.log(localStorage.getItem('@TOKEN'));
             })
             .catch((error) => {
                 setIsLoading(false);
@@ -63,7 +59,7 @@ const Home = () => {
                         </div>
                     </UserInfo>
                     {
-                        user && <Technologies setShowModal={setShowModal} />
+                        user && <Technologies setShowModal={setShowModal} setIsLoading={setIsLoading} />
                     }
                 </Content>
             </Container>

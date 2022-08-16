@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
     display: flex;
-    position: ${({isModal}) => isModal ? 'absolute' : 'relative'};
+    position: ${({isModal}) => isModal ? 'fixed' : 'static'};
     flex-direction: column;
     justify-content: center;
     width: 100vw;

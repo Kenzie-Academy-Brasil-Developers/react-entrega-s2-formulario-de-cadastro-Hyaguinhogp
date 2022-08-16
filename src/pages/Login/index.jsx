@@ -31,19 +31,19 @@ const Login = () => {
 
     const onSubmitFuntion = (data) => {
         setIsLoading(true);
-        try {
-            login(data).then(() => {
-                setIsLoading(true);
+        login(data)
+            .then(() => {
+                setIsLoading(false);
                 successNotify();
                 setTimeout(() => {
                     navigate(`/users/${localStorage.getItem('@USERID')}`);
                 }, 2000);
-            });
-        }
-        catch (err) {
-            setIsLoading(true);
-            failNotify();
-        }
+            })
+            .catch ((err) => {
+                setIsLoading(false);
+                failNotify();
+            })
+
     }
 
     return (
