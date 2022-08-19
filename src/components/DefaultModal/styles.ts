@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+interface IContentProps {
+    isSuccess: Boolean;
+}
+
 export const Container = styled.div`
     position: absolute;
     display: flex;
@@ -15,7 +19,7 @@ export const Content = styled.div`
     width: 286px;
     height: 70px;
     padding: 5px;
-    border-bottom: 6px solid ${({isSuccess}) => isSuccess ? '#3FE864' : '#E83F5B'} ;
+    border-bottom: 6px solid ${({isSuccess}: IContentProps) => isSuccess ? '#3FE864' : '#E83F5B'} ;
     border-radius: 4px;
     background-color: #343B41;
     font-family: 'Inter', sans-serif;
@@ -26,7 +30,7 @@ export const Content = styled.div`
 
     svg {
         box-sizing: border-box;
-        background-color: ${({isSuccess}) => isSuccess ? '#3FE864' : '#E83F5B'};
+        background-color: ${({isSuccess}: IContentProps) => isSuccess ? '#3FE864' : '#E83F5B'};
         padding:5px;
         width: 30px;
         height: 30px;

@@ -5,12 +5,11 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import DefaultForm from '../../components/DefaultForm';
 import DefaultPage from '../../components/DefaultPage';
-import api from "../../services/api";
 import { HeaderContainer, LoadingContainer, ReturnButton } from './styles';
 import { ReactComponent as Loading } from '../../assets/images/loading.svg';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { toast } from 'react-toastify';
-import { userContext } from '../../contexts/UserContext';
+import { IUserRegisterData, userContext } from '../../contexts/UserContext';
 
 const Register = () => {
 
@@ -42,27 +41,12 @@ const Register = () => {
 
     });
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm<IUserRegisterData>({
         resolver: yupResolver(schema)
     });
 
-    const onSubmit = (data) => {
+    const onSubmit = (data: IUserRegisterData) => {
         setIsLoading(true);
-        /*         api.post('/users', data)
-                    .then((res) => {
-                        setIsLoading(false);
-                        successNotify();
-                        setTimeout(() => {
-                            navigate('/login');
-                        }, 2000);
-        
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        setIsLoading(false)
-                        failNotify();
-                    }); */
-
         userRegister(data)
             .then(() => {
                 setIsLoading(false);
@@ -153,7 +137,7 @@ const Register = () => {
 
                     <label htmlFor="course_module">Selecionar Módulo</label>
                     <select
-                        name='course_module'
+                        id='course_module'
                         {...register('course_module')}
                     >
                         <option value='Primeiro módulo (Introdução ao Frontend)'>Primeiro Módulo</option>

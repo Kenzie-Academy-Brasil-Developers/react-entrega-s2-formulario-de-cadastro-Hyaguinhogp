@@ -6,7 +6,9 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Providers from './contexts/Providers'
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
 root.render(
   <React.StrictMode>
     <BrowserRouter>

@@ -5,10 +5,14 @@ import DefaultPage from '../DefaultPage';
 import { NewTechnologyHeader } from './styles';
 import { useForm } from 'react-hook-form';
 import { useContext } from 'react';
-import { userContext } from '../../contexts/UserContext';
-import { useState } from 'react';
+import { ITechnologyData, userContext } from '../../contexts/UserContext';
 
-const NewTechnologyModal = ({ setShowModal, setIsLoading }) => {
+interface INewTechnologyModalProps {
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const NewTechnologyModal = ({ setShowModal, setIsLoading }: INewTechnologyModalProps) => {
 
     const { getUser, newTechnology } = useContext(userContext);
 
@@ -21,11 +25,11 @@ const NewTechnologyModal = ({ setShowModal, setIsLoading }) => {
         status: yup.string().required('status obrigatório')
     });
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm<ITechnologyData>({
         resolver: yupResolver(schema),
     });
 
-    const onSubmitFuntion = (data) => {
+    const onSubmitFuntion = (data: ITechnologyData) => {
         setIsLoading(true);
         setShowModal(false);
         newTechnology(data)
@@ -55,7 +59,7 @@ const NewTechnologyModal = ({ setShowModal, setIsLoading }) => {
                         type="text"
                         {...register('title')}
                     />
-                    <span>{errors.name?.message}</span>
+                    <span>{errors.title?.message}</span>
 
                     <label htmlFor="status">Selecionar status</label>
                     <select
@@ -73,7 +77,6 @@ const NewTechnologyModal = ({ setShowModal, setIsLoading }) => {
                 </DefaultForm>
             </DefaultPage>
         </>
-
     );
 }
 

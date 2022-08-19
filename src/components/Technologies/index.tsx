@@ -3,7 +3,12 @@ import { userContext } from "../../contexts/UserContext";
 import Technology from "../Technology";
 import { TechnologiesContainer, TechnologiesContent, TechnologiesHeader, TechnologiesList } from "./styles";
 
-const Technologies = ({ setShowModal, setIsLoading }) => {
+interface ITechnologiesProps {
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Technologies = ({ setShowModal, setIsLoading }: ITechnologiesProps) => {
 
     const { user } = useContext(userContext);
 

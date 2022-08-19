@@ -1,6 +1,12 @@
+import { ReactNode } from "react";
 import { Container, Content } from "./styles";
 
-const DefaultPage = ({children, isModal = false}) => {
+interface IDefaultPageProps {
+    children: ReactNode;
+    isModal?: boolean;
+}
+
+const DefaultPage = ({children, isModal = false}: IDefaultPageProps) => {
     return(
         <Container isModal={isModal}>
             <Content>

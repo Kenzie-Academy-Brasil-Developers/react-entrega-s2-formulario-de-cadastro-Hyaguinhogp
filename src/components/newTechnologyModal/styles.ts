@@ -18,5 +18,4 @@ export const NewTechnologyHeader = styled.div`
         background-color: transparent;
         border: 0;
     }
-
 `;

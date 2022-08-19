@@ -1,7 +1,11 @@
 import { Container, Content } from "./styles";
 import { GrFormCheckmark, GrCircleAlert } from 'react-icons/gr';
 
-const DefaultModal = ({ isSuccess }) => {
+interface IDefaultModalProps {
+    isSuccess: Boolean;
+}
+
+const DefaultModal = ({ isSuccess }: IDefaultModalProps) => {
     return (
         <Container>
             <Content isSuccess={isSuccess}>
@@ -17,8 +21,6 @@ const DefaultModal = ({ isSuccess }) => {
                             <h2>Ops! Algo deu errado</h2>
                         </>
                 }
-
-
             </Content>
         </Container>
     );

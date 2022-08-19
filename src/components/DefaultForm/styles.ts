@@ -76,5 +76,4 @@ export const Content = styled.form`
 
         &.margin{margin-bottom: 15px;};
     }
-
 `;

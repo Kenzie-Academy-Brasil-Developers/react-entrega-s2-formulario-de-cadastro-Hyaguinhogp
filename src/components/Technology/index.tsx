@@ -1,9 +1,14 @@
 import { Container, Content, LeftContent, RightContent } from "./styles";
 import { FaRegTrashAlt } from 'react-icons/fa'
 import { useContext } from "react";
-import { userContext } from "../../contexts/UserContext";
+import { ITechnologyData, userContext } from "../../contexts/UserContext";
 
-const Technology = ({tech, setIsLoading}) => {
+interface ITechnologyProps {
+    tech: ITechnologyData;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Technology = ({ tech, setIsLoading }: ITechnologyProps) => {
 
     const { getUser, deleteTechnology } = useContext(userContext);
 

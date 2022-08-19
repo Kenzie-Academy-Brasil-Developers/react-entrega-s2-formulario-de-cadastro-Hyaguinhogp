@@ -1,6 +1,11 @@
+import { ReactNode } from "react";
 import { UserProvider } from "./UserContext";
 
-const Providers = ({children}) => {
+interface IProvidersProps {
+    children: ReactNode;
+}
+
+const Providers = ({children}: IProvidersProps) => {
     return(
         <UserProvider>
             {children}

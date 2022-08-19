@@ -1,14 +1,18 @@
 import styled from "styled-components";
 
+interface IContainerProps {
+    isModal: boolean;
+}
+
 export const Container = styled.div`
     display: flex;
-    position: ${({isModal}) => isModal ? 'fixed' : 'static'};
+    position: ${({isModal}: IContainerProps) => isModal ? 'fixed' : 'static'};
     flex-direction: column;
     justify-content: center;
     width: 100vw;
     min-height: 100vh;
     padding: 0 15px;
-    background-color: ${({isModal}) => isModal ? 'rgba(0, 0, 0, 0.5)' : '#121214'};
+    background-color: ${({isModal}: IContainerProps) => isModal ? 'rgba(0, 0, 0, 0.5)' : '#121214'};
 
     @media (min-width: 500px) {
         align-items: center;

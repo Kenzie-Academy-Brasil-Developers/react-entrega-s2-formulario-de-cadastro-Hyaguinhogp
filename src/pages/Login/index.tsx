@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import { ReactComponent as Loading } from '../../assets/images/loading.svg';
 import DefaultForm from "../../components/DefaultForm";
 import DefaultPage from "../../components/DefaultPage";
-import { userContext } from '../../contexts/UserContext';
+import { IUserLoginData, userContext } from '../../contexts/UserContext';
 import { LoadingContainer } from "./styles";
 
 const Login = () => {
@@ -25,14 +25,14 @@ const Login = () => {
         password: yup.string().required('Senha obrigatória')
     });
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm<IUserLoginData>({
         resolver: yupResolver(schema),
     });
 
-    const onSubmitFuntion = (data) => {
+    const onSubmitFunction = (data: IUserLoginData) => {
         setIsLoading(true);
         login(data)
-            .then(() => {
+            .then((res) => {
                 setIsLoading(false);
                 successNotify();
                 setTimeout(() => {
@@ -43,7 +43,6 @@ const Login = () => {
                 setIsLoading(false);
                 failNotify();
             })
-
     }
 
     return (
@@ -57,7 +56,7 @@ const Login = () => {
             }
             <DefaultPage>
                 <h1>Kenzie Hub</h1>
-                <DefaultForm onSubmit={handleSubmit(onSubmitFuntion)}>
+                <DefaultForm onSubmit={handleSubmit(onSubmitFunction)}>
                     <h2 className="margin">Login</h2>
                     <label htmlFor="email">Email</label>
                     <input
